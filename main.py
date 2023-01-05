@@ -178,17 +178,12 @@ class Agenda(Frame):
             pass
 
 
+
+
+
     def validar_contacto(self, nombre, apellido_p, telefono):
         campos_obligatorios = False
-        telefono_valido = False
-        tel_valido = False
-
-        for i in telefono:
-            if i in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-']:
-                tel_valido = True
-            else:
-                tel_valido = False
-                break
+        telefono_valido = self.validar_telefono(telefono)
 
         if nombre == '' or apellido_p == '':
             Label(self.ventana_contacto, text='Error: Revise los campos obligatorios', fg='red',
@@ -196,17 +191,11 @@ class Agenda(Frame):
         else:
             campos_obligatorios = True
 
-        if telefono != '' and (tel_valido == False or len(telefono) != 13):
-            Label(self.ventana_contacto, text='Error: Teléfono inválido', fg='red', bg=self.c_r,
-                  anchor='w').place(relx=0.03, rely=0.75, relwidth=0.94, relheight=0.05)
-        else:
-            telefono_valido = True
-
         if campos_obligatorios == True and telefono_valido == True:
             return True
 
-        # Validación de datos y query para editar / actualizar contacto
 
+# Validación de datos y query para editar / actualizar contacto
     def guardar_cambios_contacto(self):
         nombre = self.nombre_contacto.get()
         apellido_p = self.apellido_p_contacto.get()
@@ -321,6 +310,28 @@ class Agenda(Frame):
         fila_seleccionada = event.widget.focus()
         datos = self.treeview.item(fila_seleccionada)
         self.id_contacto = datos['text']
+
+# Recibe el número de telefono ingresado en el Entry de teléfono
+# Función para validar que el teléfono incluye solamente números y guión medio
+# Valida la longitud del número telefónico - Lanza error al no pasar la validación
+    def validar_telefono(self, telefono):
+        tel_numerico = None
+        
+        for i in telefono:
+            if i.isdigit() or i == '-':
+                tel_numerico = True
+            else:
+                tel_numerico = False
+                break
+            
+
+        if telefono != '' and (tel_numerico == False or len(telefono) != 13):
+            Label(self.ventana_contacto, text='Error: Teléfono inválido', fg='red', bg=self.c_r,
+                  anchor='w').place(relx=0.03, rely=0.75, relwidth=0.94, relheight=0.05)
+        else:
+            return True
+
+
 
 
 
