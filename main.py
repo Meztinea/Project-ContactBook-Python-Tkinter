@@ -218,6 +218,8 @@ class Agenda(Frame):
         apellido_p = self.apellido_p_contacto.get()
         apellido_m = self.apellido_m_contacto.get()
         telefono = self.telefono_contacto.get()
+        email = self.email_contacto.get()
+        print(email)
         datos_validados = self.validar_contacto(nombre, apellido_p, telefono)
 
         caracteres_1, caracteres_2 = 'áéíóúüÁÉÍÓÚÜ', 'aeiouuAEIOUU'
@@ -231,7 +233,7 @@ class Agenda(Frame):
 
         if datos_validados == True:
             agregar_contacto(connection, nombre, apellido_p,
-                             apellido_m, telefono)
+                             apellido_m, telefono, email)
             self.lista_contactos = traer_contactos(connection)
             self.actualizar_treeview_contactos(self.lista_contactos)
             self.ventana_contacto.destroy()

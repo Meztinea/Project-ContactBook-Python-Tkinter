@@ -77,9 +77,9 @@ def actualizar_contacto(connection, nombre, apellido_p, apellido_m, telefono, id
     sql_statement_2(connection, statement, data)
 
 
-def agregar_contacto(connection, nombre, apellido_paterno, apellido_materno, telefono):
-    statement = 'INSERT INTO contactos (nombre, apellido_p, apellido_m, telefono) VALUES(?, ?, ?, ?)'
-    data = (nombre, apellido_paterno, apellido_materno, telefono)
+def agregar_contacto(connection, nombre, apellido_paterno, apellido_materno, telefono, email):
+    statement = 'INSERT INTO contactos (nombre, apellido_p, apellido_m, telefono, email) VALUES(?, ?, ?, ?, ?)'
+    data = (nombre, apellido_paterno, apellido_materno, telefono, email)
     sql_statement_2(connection, statement, data)
 
 
