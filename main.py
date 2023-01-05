@@ -308,7 +308,7 @@ class Agenda(Frame):
         contacto_buscar = event.widget.get()
 
         if contacto_buscar == '':
-            datos = self.lista_contactos
+            contactos_coincidencias = self.lista_contactos
         else:
             contactos_coincidencias = []
             for contacto in self.lista_contactos:
@@ -405,7 +405,7 @@ class Agenda(Frame):
 if __name__ == "__main__":
     ventana = Tk()
     ventana.title('Contact Book by @Meztinea')
-    ventana.geometry('540x310')
+    ventana.geometry('650x310')
     ventana.configure(background='#BCB8B1')  # CCD5AE
     ventana.minsize(height=310, width=540)
 
