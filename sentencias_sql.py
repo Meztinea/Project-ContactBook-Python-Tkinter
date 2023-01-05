@@ -71,9 +71,9 @@ def traer_contacto_id_editar(connection, id_contacto):
     return contacto
 
 
-def actualizar_contacto(connection, nombre, apellido_p, apellido_m, telefono, id):
-    statement = 'UPDATE contactos SET nombre = ?, apellido_p = ?, apellido_m = ?, telefono = ? WHERE id = ?'
-    data = (nombre, apellido_p, apellido_m, telefono, id)
+def actualizar_contacto(connection, nombre, apellido_p, apellido_m, telefono, email, id, ):
+    statement = 'UPDATE contactos SET nombre = ?, apellido_p = ?, apellido_m = ?, telefono = ?, email = ? WHERE id = ?'
+    data = (nombre, apellido_p, apellido_m, telefono, email, id)
     sql_statement_2(connection, statement, data)
 
 
