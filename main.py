@@ -177,39 +177,12 @@ class Agenda(Frame):
             #self.contacto = traer_contacto_id(connection, self.id_contacto)
             pass
 
-    def validar_contacto(self, nombre, apellido_p, telefono):
-        campos_obligatorios = self.validar_nombre_apellidos(nombre, apellido_p)
-        telefono_valido = self.validar_telefono(telefono)
-
-        if campos_obligatorios == True and telefono_valido == True:
-            return True
 
 
-    def validar_nombre_apellidos(self, nombre, apellido_p):
-        if nombre == '' or apellido_p == '':
-            Label(self.ventana_contacto, text='Error: Revise los campos obligatorios', fg='red',
-                  bg=self.c_r, anchor='w').place(relx=0.03, rely=0.75, relwidth=0.94, relheight=0.05)
-        else:
-            return True
 
 
-# Recibe el nombre, apellido_p y apellido_m para darle formato 
-# Quita las tildes, Convierte primer letra en mayúsculas
-    def dar_formato_nombre(self):
-        nombre = self.nombre_contacto.get()
-        apellido_p = self.apellido_p_contacto.get()
-        apellido_m = self.apellido_m_contacto.get()
-        telefono = self.telefono_contacto.get()
-        email = self.email_contacto.get()
-        
-        caracteres_1, caracteres_2 = 'áéíóúüÁÉÍÓÚÜ', 'aeiouuAEIOUU'
-        hacer_cambio = str.maketrans(caracteres_1, caracteres_2)
-        nombre = str.title(nombre.translate(hacer_cambio))
-        apellido_p = str.title(apellido_p.translate(hacer_cambio))
-        apellido_m = str.title(apellido_m.translate(hacer_cambio))
-        contacto = {'nombre': nombre, 'apellido_p': apellido_p, 'apellido_m': apellido_m,
-                           'telefono': telefono, 'email': email}
-        return contacto
+
+
 
 
 
@@ -227,28 +200,15 @@ class Agenda(Frame):
             self.actualizar_treeview_contactos(self.lista_contactos)
             self.ventana_contacto.destroy()
 
-    # Validacion de datos y query para agregar contacto
-
+# Validacion de datos y query para agregar contacto
     def guardar_nuevo_contacto(self):
-        nombre = self.nombre_contacto.get()
-        apellido_p = self.apellido_p_contacto.get()
-        apellido_m = self.apellido_m_contacto.get()
-        telefono = self.telefono_contacto.get()
-        email = self.email_contacto.get()
-        datos_validados = self.validar_contacto(nombre, apellido_p, telefono)
-
-        caracteres_1, caracteres_2 = 'áéíóúüÁÉÍÓÚÜ', 'aeiouuAEIOUU'
-        hacer_cambio = str.maketrans(caracteres_1, caracteres_2)
-        nombre = nombre.translate(hacer_cambio)
-        nombre = str.title(nombre)
-        apellido_p = apellido_p.translate(hacer_cambio)
-        apellido_p = str.title(apellido_p)
-        apellido_m = apellido_m.translate(hacer_cambio)
-        apellido_m = str.title(apellido_m)
+        contacto = self.dar_formato_nombre()
+        datos_validados = self.validar_contacto(contacto['nombre'], contacto['apellido_p'],
+                                                contacto['telefono'])
 
         if datos_validados == True:
-            agregar_contacto(connection, nombre, apellido_p,
-                             apellido_m, telefono, email)
+            agregar_contacto(connection, contacto['nombre'], contacto['apellido_p'],
+                                contacto['apellido_m'], contacto['telefono'], contacto['email'])
             self.lista_contactos = traer_contactos(connection)
             self.actualizar_treeview_contactos(self.lista_contactos)
             self.ventana_contacto.destroy()
@@ -338,6 +298,44 @@ class Agenda(Frame):
                   anchor='w').place(relx=0.03, rely=0.75, relwidth=0.94, relheight=0.05)
         else:
             return True
+
+# Ejecuta las funciones para validar el nombre completo y el teléfono del contacto
+# Retorna true en caso de cumplir con todas las validaciones
+    def validar_contacto(self, nombre, apellido_p, telefono):
+        campos_obligatorios = self.validar_nombre_apellidos(nombre, apellido_p)
+        telefono_valido = self.validar_telefono(telefono)
+
+        if campos_obligatorios == True and telefono_valido == True:
+            return True
+
+# Recibe el nombre y apellido paterno del contacto
+# Verifica si los campos están vacíos o no
+# Si están vacios envía un mensaje de error, si no estan vacios retorna True
+    def validar_nombre_apellidos(self, nombre, apellido_p):
+        if nombre == '' or apellido_p == '':
+            Label(self.ventana_contacto, text='Error: Revise los campos obligatorios', fg='red',
+                  bg=self.c_r, anchor='w').place(relx=0.03, rely=0.75, relwidth=0.94, relheight=0.05)
+        else:
+            return True
+
+# Consigue los datos del contacto y los almacena en un diccionario, da formato al nombre
+# y apellidos del contacto. Quita las tildes, Convierte primer letra en mayúsculas
+# Retorna un diccionario con los datos del contacto ya en su formato 
+    def dar_formato_nombre(self):
+        nombre = self.nombre_contacto.get()
+        apellido_p = self.apellido_p_contacto.get()
+        apellido_m = self.apellido_m_contacto.get()
+        telefono = self.telefono_contacto.get()
+        email = self.email_contacto.get()
+        
+        caracteres_1, caracteres_2 = 'áéíóúüÁÉÍÓÚÜ', 'aeiouuAEIOUU'
+        hacer_cambio = str.maketrans(caracteres_1, caracteres_2)
+        nombre = str.title(nombre.translate(hacer_cambio))
+        apellido_p = str.title(apellido_p.translate(hacer_cambio))
+        apellido_m = str.title(apellido_m.translate(hacer_cambio))
+        contacto = {'nombre': nombre, 'apellido_p': apellido_p, 'apellido_m': apellido_m,
+                           'telefono': telefono, 'email': email}
+        return contacto
 
 
 
