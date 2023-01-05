@@ -62,7 +62,7 @@ class Agenda(Frame):
         self.ventana_contacto.geometry('300x350')
         self.ventana_contacto.configure(background='#0C1633')
         self.ventana_contacto.minsize(height=350, width=300)
-        # Etiquetas 
+        # Etiquetas
         Label(self.ventana_contacto, text='Agregar Nuevo Contacto', fg=self.c_t, bg=self.c_r,
               anchor='c', font=('Arial', 16)).place(relx=0.03, rely=0.03, relwidth=0.94, relheight=0.11)
         Label(self.ventana_contacto, text='* Campos obligatorios', fg=self.c_t, bg=self.c_r,
@@ -118,19 +118,19 @@ class Agenda(Frame):
             self.ventana_contacto.minsize(height=350, width=300)
             # Etiquetas
             Label(self.ventana_contacto, text='Editar Datos de Contacto', fg=self.c_t, bg=self.c_r,
-              anchor='c', font=('Arial', 16)).place(relx=0.03, rely=0.03, relwidth=0.94, relheight=0.11)
+                  anchor='c', font=('Arial', 16)).place(relx=0.03, rely=0.03, relwidth=0.94, relheight=0.11)
             Label(self.ventana_contacto, text='* Campos obligatorios', fg=self.c_t, bg=self.c_r,
-                anchor='w').place(relx=0.03, rely=0.17, relwidth=0.45, relheight=0.05)
+                  anchor='w').place(relx=0.03, rely=0.17, relwidth=0.45, relheight=0.05)
             Label(self.ventana_contacto, text='Nombre *', fg=self.c_t, bg=self.c_r,
-                anchor='w').place(relx=0.03, rely=0.25, relwidth=0.35, relheight=0.08)
+                  anchor='w').place(relx=0.03, rely=0.25, relwidth=0.35, relheight=0.08)
             Label(self.ventana_contacto, text='Apellido Paterno *', fg=self.c_t, bg=self.c_r,
-                anchor='w').place(relx=0.03, rely=0.36, relwidth=0.35, relheight=0.08)
+                  anchor='w').place(relx=0.03, rely=0.36, relwidth=0.35, relheight=0.08)
             Label(self.ventana_contacto, text='Apellido Materno', fg=self.c_t, bg=self.c_r,
-                anchor='w').place(relx=0.03, rely=0.47, relwidth=0.35, relheight=0.08)
+                  anchor='w').place(relx=0.03, rely=0.47, relwidth=0.35, relheight=0.08)
             Label(self.ventana_contacto, text='Teléfono', fg=self.c_t, bg=self.c_r,
-                anchor='w').place(relx=0.03, rely=0.58, relwidth=0.35, relheight=0.08)
+                  anchor='w').place(relx=0.03, rely=0.58, relwidth=0.35, relheight=0.08)
             Label(self.ventana_contacto, text='Email', fg=self.c_t, bg=self.c_r,
-                anchor='w').place(relx=0.03, rely=0.69, relwidth=0.35, relheight=0.08)
+                  anchor='w').place(relx=0.03, rely=0.69, relwidth=0.35, relheight=0.08)
             # Entrys
             self.nombre_contacto = Entry(
                 self.ventana_contacto, fg=self.c_t_e, bg=self.c_r_e)
@@ -166,28 +166,22 @@ class Agenda(Frame):
             self.actualizar_entry(self.telefono_contacto, self.contacto[0][4])
             self.actualizar_entry(self.email_contacto, self.contacto[0][5])
 
-
     # Frame para eliminar un contacto
+
     def eliminar_contacto(self):
         if self.id_contacto == '':
             messagebox.showerror(
                 title='Error', message='Seleccione un contacto en la lista')
         else:
             # Agregar el código para eliminar a un contacto
-            #self.contacto = traer_contacto_id(connection, self.id_contacto)
+            # self.contacto = traer_contacto_id(connection, self.id_contacto)
             pass
 
 
-
-
-
-
-
-
-
-
-
-# Validación de datos y query para editar / actualizar contacto
+# Actualizar contacto
+# Llama a las funciones necesarias para para validar los datos antes de guardar
+# Habiendo validado los datos ejecuta el query para guardar los cambios del contacto
+# Actualiza la lista de contactos en la ventana principal y cierra la ventana de editar contacto
     def guardar_cambios_contacto(self):
         contacto = self.dar_formato_nombre()
         datos_validados = self.validar_contacto(contacto['nombre'], contacto['apellido_p'],
@@ -200,7 +194,11 @@ class Agenda(Frame):
             self.actualizar_treeview_contactos(self.lista_contactos)
             self.ventana_contacto.destroy()
 
-# Validacion de datos y query para agregar contacto
+
+# Agregar nuevo contacto
+# Llama a las funciones necesarias para para validar los datos antes de guardar
+# Habiendo validado los datos ejecuta el query para guardar al nuevo contacto
+# Actualiza la lista de contactos en la ventana principal y cierra la ventana de agregar contacto
     def guardar_nuevo_contacto(self):
         contacto = self.dar_formato_nombre()
         datos_validados = self.validar_contacto(contacto['nombre'], contacto['apellido_p'],
@@ -208,15 +206,19 @@ class Agenda(Frame):
 
         if datos_validados == True:
             agregar_contacto(connection, contacto['nombre'], contacto['apellido_p'],
-                                contacto['apellido_m'], contacto['telefono'], contacto['email'])
+                             contacto['apellido_m'], contacto['telefono'], contacto['email'])
             self.lista_contactos = traer_contactos(connection)
             self.actualizar_treeview_contactos(self.lista_contactos)
             self.ventana_contacto.destroy()
 
 
+# Funcion abstracta que recibe el nombre de una variable self (Entry de Tkinter)
+# y el dato que se va a ingresar dentro del Entry
+# Función que permite ver los datos del contacto que se va a editar
+    def actualizar_entry(self, variable, dato):
+        variable.delete(0, 'end')
+        variable.insert(0, dato)
 
-
-############################    Funciones   revisadas       ###########################
 
 # Recibe una lista de tuplas, cada tupla es un contacto, la tupla contiene 4 elementos
 # Actualiza el treeview que se muestra como lista de contactos en la GUI
@@ -227,15 +229,21 @@ class Agenda(Frame):
                 lista[i][1], lista[i][2], lista[i][3]))
 
 
+# Identifica el id del contacto seleccionado en la lista treeview para poder editarlo
+# Modifica la variable self.id_contacto para almacenar el id del contacto
+    def seleccion_treeview(self, event):
+        fila_seleccionada = event.widget.focus()
+        datos = self.treeview.item(fila_seleccionada)
+        self.id_contacto = datos['text']
+
+
 # Recibe un evento de input en el Entry Buscar Contacto, con los datos recibidos busca coincidencias
 # Busca en una lista de tuplas las coincidencias de contactos en la base de datos
-
     def buscar_contactos(self, event):
         contacto_buscar = event.widget.get()
 
         if contacto_buscar == '':
             datos = self.lista_contactos
-
         else:
             contactos_coincidencias = []
             for contacto in self.lista_contactos:
@@ -264,40 +272,26 @@ class Agenda(Frame):
                 entrada[3:6] + '-' + entrada[6:8] + '-' + entrada[8:10]
             self.actualizar_entry(self.telefono_contacto, entrada_modificada)
 
-# Funcion abstracta que recibe el nombre de una variable self (Entry de Tkinter) 
-# y el dato que se va a ingresar dentro del Entry
-# Función que permite ver los datos del contacto que se va a editar
-    def actualizar_entry(self, variable, dato):
-        variable.delete(0, 'end')
-        variable.insert(0, dato)
 
+# Consigue los datos del contacto y los almacena en un diccionario, da formato al nombre
+# y apellidos del contacto. Quita las tildes, Convierte primer letra en mayúsculas
+# Retorna un diccionario con los datos del contacto ya en su formato
+    def dar_formato_nombre(self):
+        nombre = self.nombre_contacto.get()
+        apellido_p = self.apellido_p_contacto.get()
+        apellido_m = self.apellido_m_contacto.get()
+        telefono = self.telefono_contacto.get()
+        email = self.email_contacto.get()
 
-# Identifica el id del contacto seleccionado en la lista treeview para poder editarlo
-# Modifica la variable self.id_contacto para almacenar el id del contacto
-    def seleccion_treeview(self, event):
-        fila_seleccionada = event.widget.focus()
-        datos = self.treeview.item(fila_seleccionada)
-        self.id_contacto = datos['text']
+        caracteres_1, caracteres_2 = 'áéíóúüÁÉÍÓÚÜ', 'aeiouuAEIOUU'
+        hacer_cambio = str.maketrans(caracteres_1, caracteres_2)
+        nombre = str.title(nombre.translate(hacer_cambio))
+        apellido_p = str.title(apellido_p.translate(hacer_cambio))
+        apellido_m = str.title(apellido_m.translate(hacer_cambio))
+        contacto = {'nombre': nombre, 'apellido_p': apellido_p, 'apellido_m': apellido_m,
+                    'telefono': telefono, 'email': email}
+        return contacto
 
-# Recibe el número de telefono ingresado en el Entry de teléfono
-# Función para validar que el teléfono incluye solamente números y guión medio
-# Valida la longitud del número telefónico - Lanza error al no pasar la validación
-    def validar_telefono(self, telefono):
-        tel_numerico = None
-        
-        for i in telefono:
-            if i.isdigit() or i == '-':
-                tel_numerico = True
-            else:
-                tel_numerico = False
-                break
-            
-
-        if telefono != '' and (tel_numerico == False or len(telefono) != 13):
-            Label(self.ventana_contacto, text='Error: Teléfono inválido', fg='red', bg=self.c_r,
-                  anchor='w').place(relx=0.03, rely=0.75, relwidth=0.94, relheight=0.05)
-        else:
-            return True
 
 # Ejecuta las funciones para validar el nombre completo y el teléfono del contacto
 # Retorna true en caso de cumplir con todas las validaciones
@@ -308,6 +302,26 @@ class Agenda(Frame):
         if campos_obligatorios == True and telefono_valido == True:
             return True
 
+# Recibe el número de telefono ingresado en el Entry de teléfono
+# Función para validar que el teléfono incluye solamente números y guión medio
+# Valida la longitud del número telefónico - Lanza error al no pasar la validación
+    def validar_telefono(self, telefono):
+        tel_numerico = None
+
+        for i in telefono:
+            if i.isdigit() or i == '-':
+                tel_numerico = True
+            else:
+                tel_numerico = False
+                break
+
+        if telefono != '' and (tel_numerico == False or len(telefono) != 13):
+            Label(self.ventana_contacto, text='Error: Teléfono inválido', fg='red', bg=self.c_r,
+                  anchor='w').place(relx=0.03, rely=0.75, relwidth=0.94, relheight=0.05)
+        else:
+            return True
+
+
 # Recibe el nombre y apellido paterno del contacto
 # Verifica si los campos están vacíos o no
 # Si están vacios envía un mensaje de error, si no estan vacios retorna True
@@ -317,28 +331,6 @@ class Agenda(Frame):
                   bg=self.c_r, anchor='w').place(relx=0.03, rely=0.75, relwidth=0.94, relheight=0.05)
         else:
             return True
-
-# Consigue los datos del contacto y los almacena en un diccionario, da formato al nombre
-# y apellidos del contacto. Quita las tildes, Convierte primer letra en mayúsculas
-# Retorna un diccionario con los datos del contacto ya en su formato 
-    def dar_formato_nombre(self):
-        nombre = self.nombre_contacto.get()
-        apellido_p = self.apellido_p_contacto.get()
-        apellido_m = self.apellido_m_contacto.get()
-        telefono = self.telefono_contacto.get()
-        email = self.email_contacto.get()
-        
-        caracteres_1, caracteres_2 = 'áéíóúüÁÉÍÓÚÜ', 'aeiouuAEIOUU'
-        hacer_cambio = str.maketrans(caracteres_1, caracteres_2)
-        nombre = str.title(nombre.translate(hacer_cambio))
-        apellido_p = str.title(apellido_p.translate(hacer_cambio))
-        apellido_m = str.title(apellido_m.translate(hacer_cambio))
-        contacto = {'nombre': nombre, 'apellido_p': apellido_p, 'apellido_m': apellido_m,
-                           'telefono': telefono, 'email': email}
-        return contacto
-
-
-
 
 
 if __name__ == "__main__":
