@@ -77,7 +77,6 @@ class Agenda(Frame):
               anchor='w').place(relx=0.03, rely=0.58, relwidth=0.35, relheight=0.08)
         Label(self.ventana_contacto, text='Email', fg=self.c_t, bg=self.c_r,
               anchor='w').place(relx=0.03, rely=0.69, relwidth=0.35, relheight=0.08)
-        
         self.nombre_contacto = Entry(
             self.ventana_contacto, fg=self.c_t_e, bg=self.c_r_e)
         self.nombre_contacto.place(
@@ -112,37 +111,43 @@ class Agenda(Frame):
                 connection, self.id_contacto)
             self.ventana_contacto = Tk()
             self.ventana_contacto.title('Editar Contacto')
-            self.ventana_contacto.geometry('300x300')
+            self.ventana_contacto.geometry('300x350')
             self.ventana_contacto.configure(background='#0C1633')
-            self.ventana_contacto.minsize(height=300, width=300)
-            Label(self.ventana_contacto, text='Editar Datos del Contacto', fg=self.c_t, bg=self.c_r,
-                  anchor='c', font=('Arial', 16)).place(relx=0.03, rely=0.05, relwidth=0.94, relheight=0.13)
+            self.ventana_contacto.minsize(height=350, width=300)
+            Label(self.ventana_contacto, text='Editar Datos de Contacto', fg=self.c_t, bg=self.c_r,
+              anchor='c', font=('Arial', 16)).place(relx=0.03, rely=0.03, relwidth=0.94, relheight=0.11)
             Label(self.ventana_contacto, text='* Campos obligatorios', fg=self.c_t, bg=self.c_r,
-                  anchor='w').place(relx=0.03, rely=0.20, relwidth=0.45, relheight=0.05)
+                anchor='w').place(relx=0.03, rely=0.17, relwidth=0.45, relheight=0.05)
             Label(self.ventana_contacto, text='Nombre *', fg=self.c_t, bg=self.c_r,
-                  anchor='w').place(relx=0.03, rely=0.27, relwidth=0.35, relheight=0.10)
+                anchor='w').place(relx=0.03, rely=0.25, relwidth=0.35, relheight=0.08)
             Label(self.ventana_contacto, text='Apellido Paterno *', fg=self.c_t, bg=self.c_r,
-                  anchor='w').place(relx=0.03, rely=0.39, relwidth=0.35, relheight=0.10)
+                anchor='w').place(relx=0.03, rely=0.36, relwidth=0.35, relheight=0.08)
             Label(self.ventana_contacto, text='Apellido Materno', fg=self.c_t, bg=self.c_r,
-                  anchor='w').place(relx=0.03, rely=0.51, relwidth=0.35, relheight=0.10)
+                anchor='w').place(relx=0.03, rely=0.47, relwidth=0.35, relheight=0.08)
             Label(self.ventana_contacto, text='Teléfono', fg=self.c_t, bg=self.c_r,
-                  anchor='w').place(relx=0.03, rely=0.63, relwidth=0.35, relheight=0.10)
+                anchor='w').place(relx=0.03, rely=0.58, relwidth=0.35, relheight=0.08)
+            Label(self.ventana_contacto, text='Email', fg=self.c_t, bg=self.c_r,
+                anchor='w').place(relx=0.03, rely=0.69, relwidth=0.35, relheight=0.08)
             self.nombre_contacto = Entry(
                 self.ventana_contacto, fg=self.c_t_e, bg=self.c_r_e)
             self.nombre_contacto.place(
-                relx=0.41, rely=0.27, relwidth=0.56, relheight=0.10)
+                relx=0.43, rely=0.25, relwidth=0.54, relheight=0.08)
             self.apellido_p_contacto = Entry(
                 self.ventana_contacto, fg=self.c_t_e, bg=self.c_r_e)
             self.apellido_p_contacto.place(
-                relx=0.41, rely=0.39, relwidth=0.56, relheight=0.10)
+                relx=0.43, rely=0.36, relwidth=0.54, relheight=0.08)
             self.apellido_m_contacto = Entry(
                 self.ventana_contacto, fg=self.c_t_e, bg=self.c_r_e)
             self.apellido_m_contacto.place(
-                relx=0.41, rely=0.51, relwidth=0.56, relheight=0.10)
+                relx=0.43, rely=0.47, relwidth=0.54, relheight=0.08)
             self.telefono_contacto = Entry(
                 self.ventana_contacto, fg=self.c_t_e, bg=self.c_r_e)
             self.telefono_contacto.place(
-                relx=0.41, rely=0.63, relwidth=0.56, relheight=0.10)
+                relx=0.43, rely=0.58, relwidth=0.54, relheight=0.08)
+            self.email_contacto = Entry(
+                self.ventana_contacto, fg=self.c_t_e, bg=self.c_r_e)
+            self.email_contacto.place(
+                relx=0.43, rely=0.69, relwidth=0.54, relheight=0.08)
             self.telefono_contacto.bind(
                 '<KeyRelease>', self.dar_formato_telefono)
             Button(self.ventana_contacto, text='Guardar y Salir', fg=self.c_t, bg=self.c_r,
