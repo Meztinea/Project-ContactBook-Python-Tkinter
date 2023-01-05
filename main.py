@@ -177,9 +177,21 @@ class Agenda(Frame):
             #self.contacto = traer_contacto_id(connection, self.id_contacto)
             pass
 
+    def validar_contacto(self, nombre, apellido_p, telefono):
+        campos_obligatorios = self.validar_nombre_apellidos(nombre, apellido_p)
+        telefono_valido = self.validar_telefono(telefono)
 
-    def validar_nombre_apellidos(self, nombre, apellido_p, apellido_m):
-        pass
+        if campos_obligatorios == True and telefono_valido == True:
+            return True
+
+
+    def validar_nombre_apellidos(self, nombre, apellido_p):
+        if nombre == '' or apellido_p == '':
+            Label(self.ventana_contacto, text='Error: Revise los campos obligatorios', fg='red',
+                  bg=self.c_r, anchor='w').place(relx=0.03, rely=0.75, relwidth=0.94, relheight=0.05)
+        else:
+            return True
+
 
 # Recibe el nombre, apellido_p y apellido_m para darle formato 
 # Quita las tildes, Convierte primer letra en mayúsculas
@@ -241,18 +253,7 @@ class Agenda(Frame):
             self.actualizar_treeview_contactos(self.lista_contactos)
             self.ventana_contacto.destroy()
 
-    def validar_contacto(self, nombre, apellido_p, telefono):
-        campos_obligatorios = False
-        telefono_valido = self.validar_telefono(telefono)
 
-        if nombre == '' or apellido_p == '':
-            Label(self.ventana_contacto, text='Error: Revise los campos obligatorios', fg='red',
-                  bg=self.c_r, anchor='w').place(relx=0.03, rely=0.75, relwidth=0.94, relheight=0.05)
-        else:
-            campos_obligatorios = True
-
-        if campos_obligatorios == True and telefono_valido == True:
-            return True
 
 
 ############################    Funciones   revisadas       ###########################
