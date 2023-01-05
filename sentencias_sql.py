@@ -64,3 +64,10 @@ def actualizar_contacto(connection, nombre, apellido_p, apellido_m, telefono, em
     statement = 'UPDATE contactos SET nombre = ?, apellido_p = ?, apellido_m = ?, telefono = ?, email = ? WHERE id = ?'
     data = (nombre, apellido_p, apellido_m, telefono, email, id)
     sql_statement_2(connection, statement, data)
+
+
+# Recibe el id de un contacto y procede a eliminarlo de la base de datos
+def eliminar_contacto_id(connection, id_contacto):
+    statement = 'DELETE from contactos WHERE id = ?' 
+    data = (id_contacto, )
+    sql_statement_2(connection, statement, data)
