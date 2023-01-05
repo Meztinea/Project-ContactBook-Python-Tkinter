@@ -159,6 +159,7 @@ class Agenda(Frame):
             self.actualizar_entry(
                 self.apellido_m_contacto, self.contacto[0][3])
             self.actualizar_entry(self.telefono_contacto, self.contacto[0][4])
+            self.actualizar_entry(self.email_contacto, self.contacto[0][5])
 
     # Frame para eliminar un contacto
     # def eliminar_contacto():
