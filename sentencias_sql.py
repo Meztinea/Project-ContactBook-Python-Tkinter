@@ -18,8 +18,12 @@ def traer_contactos(connection):
     return datos
 
 
-
-
+# Recibe el id del contacto seleccionado para editar
+# Retorna todos los datos del contacto seleccionado
+def traer_contacto_id_editar(connection, id_contacto):
+    statement = '''SELECT * from contactos WHERE id = ''' + str(id_contacto)
+    contacto = sql_statement_3(connection, statement)
+    return contacto
 
 
 
@@ -65,10 +69,7 @@ def traer_contacto_id(connection, id_contacto):
     contacto = (datos[0][0], datos[0][1] + ' ' + datos[0][2] + ' ' + datos[0][3], datos[0][4])
     return contacto
 
-def traer_contacto_id_editar(connection, id_contacto):
-    statement = '''SELECT * from contactos WHERE id = ''' + str(id_contacto)
-    contacto = sql_statement_3(connection, statement)
-    return contacto
+
 
 
 def actualizar_contacto(connection, nombre, apellido_p, apellido_m, telefono, email, id, ):

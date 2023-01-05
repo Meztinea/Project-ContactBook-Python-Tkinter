@@ -42,7 +42,7 @@ class Agenda(Frame):
         self.treeview.column('#0', width=5, anchor='c')
         self.treeview.column('#1', width=170, anchor='w')
         self.treeview.column('#2', width=50, anchor='c')
-        self.treeview.column('#3', width=120, anchor='c')
+        self.treeview.column('#3', width=120, anchor='w')
         self.treeview.bind('<<TreeviewSelect>>', self.seleccion_treeview)
         self.lista_contactos = traer_contactos(connection)
         self.actualizar_treeview_contactos(self.lista_contactos)
@@ -53,16 +53,16 @@ class Agenda(Frame):
         Button(self.frame_principal, text='Editar Contacto', fg=self.c_t, bg=self.c_r,
                command=self.editar_contacto).place(relx=0.35, rely=0.88, relwidth=0.29, relheight=0.10)
         Button(self.frame_principal, text='Eliminar Contacto', fg=self.c_t, bg=self.c_r,
-               command=self.seleccionar_contacto).place(relx=0.67, rely=0.88, relwidth=0.30, relheight=0.10)
+               command=self.eliminar_contacto).place(relx=0.67, rely=0.88, relwidth=0.30, relheight=0.10)
 
     # Frame para agregar un nuevo contacto
-
     def agregar_contacto(self):
         self.ventana_contacto = Tk()
         self.ventana_contacto.title('Agregar Contacto')
         self.ventana_contacto.geometry('300x350')
         self.ventana_contacto.configure(background='#0C1633')
         self.ventana_contacto.minsize(height=350, width=300)
+        # Etiquetas 
         Label(self.ventana_contacto, text='Agregar Nuevo Contacto', fg=self.c_t, bg=self.c_r,
               anchor='c', font=('Arial', 16)).place(relx=0.03, rely=0.03, relwidth=0.94, relheight=0.11)
         Label(self.ventana_contacto, text='* Campos obligatorios', fg=self.c_t, bg=self.c_r,
@@ -77,6 +77,7 @@ class Agenda(Frame):
               anchor='w').place(relx=0.03, rely=0.58, relwidth=0.35, relheight=0.08)
         Label(self.ventana_contacto, text='Email', fg=self.c_t, bg=self.c_r,
               anchor='w').place(relx=0.03, rely=0.69, relwidth=0.35, relheight=0.08)
+        # Entrys
         self.nombre_contacto = Entry(
             self.ventana_contacto, fg=self.c_t_e, bg=self.c_r_e)
         self.nombre_contacto.place(
@@ -98,6 +99,7 @@ class Agenda(Frame):
         self.email_contacto.place(
             relx=0.43, rely=0.69, relwidth=0.54, relheight=0.08)
         self.telefono_contacto.bind('<KeyRelease>', self.dar_formato_telefono)
+        # Botón
         Button(self.ventana_contacto, text='Guardar y Salir', fg=self.c_t, bg=self.c_r,
                command=self.guardar_nuevo_contacto).place(relx=0.27, rely=0.82, relwidth=0.46, relheight=0.13)
 
@@ -114,6 +116,7 @@ class Agenda(Frame):
             self.ventana_contacto.geometry('300x350')
             self.ventana_contacto.configure(background='#0C1633')
             self.ventana_contacto.minsize(height=350, width=300)
+            # Etiquetas
             Label(self.ventana_contacto, text='Editar Datos de Contacto', fg=self.c_t, bg=self.c_r,
               anchor='c', font=('Arial', 16)).place(relx=0.03, rely=0.03, relwidth=0.94, relheight=0.11)
             Label(self.ventana_contacto, text='* Campos obligatorios', fg=self.c_t, bg=self.c_r,
@@ -128,6 +131,7 @@ class Agenda(Frame):
                 anchor='w').place(relx=0.03, rely=0.58, relwidth=0.35, relheight=0.08)
             Label(self.ventana_contacto, text='Email', fg=self.c_t, bg=self.c_r,
                 anchor='w').place(relx=0.03, rely=0.69, relwidth=0.35, relheight=0.08)
+            # Entrys
             self.nombre_contacto = Entry(
                 self.ventana_contacto, fg=self.c_t_e, bg=self.c_r_e)
             self.nombre_contacto.place(
@@ -150,6 +154,7 @@ class Agenda(Frame):
                 relx=0.43, rely=0.69, relwidth=0.54, relheight=0.08)
             self.telefono_contacto.bind(
                 '<KeyRelease>', self.dar_formato_telefono)
+            # Botón
             Button(self.ventana_contacto, text='Guardar y Salir', fg=self.c_t, bg=self.c_r,
                    command=self.guardar_cambios_contacto).place(relx=0.27, rely=0.82, relwidth=0.46, relheight=0.13)
             # Ingresa en los entry los datos del contacto a editar
@@ -161,9 +166,17 @@ class Agenda(Frame):
             self.actualizar_entry(self.telefono_contacto, self.contacto[0][4])
             self.actualizar_entry(self.email_contacto, self.contacto[0][5])
 
+
     # Frame para eliminar un contacto
-    # def eliminar_contacto():
-    #     pass
+    def eliminar_contacto(self):
+        if self.id_contacto == '':
+            messagebox.showerror(
+                title='Error', message='Seleccione un contacto en la lista')
+        else:
+            # Agregar el código para eliminar a un contacto
+            #self.contacto = traer_contacto_id(connection, self.id_contacto)
+            pass
+
 
     def validar_contacto(self, nombre, apellido_p, telefono):
         campos_obligatorios = False
@@ -244,52 +257,7 @@ class Agenda(Frame):
             self.actualizar_treeview_contactos(self.lista_contactos)
             self.ventana_contacto.destroy()
 
-    # Actualiza los datos de un entry, recibe el nombre del entry y el dato a ingresar
 
-    def actualizar_entry(self, variable, dato):
-        variable.delete(0, 'end')
-        variable.insert(0, dato)
-
-    # Al seleccionar un contacto en la lista treeview actualiza el id del mismo
-    def seleccion_treeview(self, event):
-        fila_seleccionada = event.widget.focus()
-        datos = self.treeview.item(fila_seleccionada)
-        self.id_contacto = datos['text']
-
-    # Trae los datos del contacto seleccionado para crearle una nueva nota
-
-    def seleccionar_contacto(self):
-        if self.id_contacto == '':
-            messagebox.showerror(
-                title='Error', message='Seleccione un contacto en la lista')
-        else:
-            self.nombre_completo.config(state='normal')
-            self.telefono.config(state='normal')
-            self.contacto = traer_contacto_id(connection, self.id_contacto)
-            self.actualizar_entry(self.nombre_completo, self.contacto[1])
-            self.actualizar_entry(self.telefono, self.contacto[2])
-            self.nombre_completo.config(state='disabled')
-            self.telefono.config(state='disabled')
-
-
-
-    # Incluye los - (guión medio) al escribir el número de teléfono en agregar / editar contacto
-    def dar_formato_telefono(self, event):
-        entrada = event.widget.get()
-        if len(entrada) == 3:
-            entrada_modificada = entrada + '-'
-            self.actualizar_entry(self.telefono_contacto, entrada_modificada)
-        if len(entrada) == 7:
-            entrada_modificada = entrada + '-'
-            self.actualizar_entry(self.telefono_contacto, entrada_modificada)
-        if len(entrada) == 10:
-            entrada_modificada = entrada + '-'
-            self.actualizar_entry(self.telefono_contacto, entrada_modificada)
-        if len(entrada) >= 13:
-            entrada = entrada.replace('-', '')
-            entrada_modificada = entrada[0:3] + '-' + \
-                entrada[3:6] + '-' + entrada[6:8] + '-' + entrada[8:10]
-            self.actualizar_entry(self.telefono_contacto, entrada_modificada)
 
 ############################    Funciones   revisadas       ###########################
 
@@ -320,9 +288,39 @@ class Agenda(Frame):
         self.actualizar_treeview_contactos(contactos_coincidencias)
 
 
+# Da formato al número de teléfono para aceptar solo entradas de 10 digitos y separados por guión
+# Incluye los - (guión medio) al escribir el número de teléfono en agregar / editar contacto
+    def dar_formato_telefono(self, event):
+        entrada = event.widget.get()
+        if len(entrada) == 3:
+            entrada_modificada = entrada + '-'
+            self.actualizar_entry(self.telefono_contacto, entrada_modificada)
+        if len(entrada) == 7:
+            entrada_modificada = entrada + '-'
+            self.actualizar_entry(self.telefono_contacto, entrada_modificada)
+        if len(entrada) == 10:
+            entrada_modificada = entrada + '-'
+            self.actualizar_entry(self.telefono_contacto, entrada_modificada)
+        if len(entrada) >= 13:
+            entrada = entrada.replace('-', '')
+            entrada_modificada = entrada[0:3] + '-' + \
+                entrada[3:6] + '-' + entrada[6:8] + '-' + entrada[8:10]
+            self.actualizar_entry(self.telefono_contacto, entrada_modificada)
+
+# Funcion abstracta que recibe el nombre de una variable self (Entry de Tkinter) 
+# y el dato que se va a ingresar dentro del Entry
+# Función que permite ver los datos del contacto que se va a editar
+    def actualizar_entry(self, variable, dato):
+        variable.delete(0, 'end')
+        variable.insert(0, dato)
 
 
-
+# Identifica el id del contacto seleccionado en la lista treeview para poder editarlo
+# Modifica la variable self.id_contacto para almacenar el id del contacto
+    def seleccion_treeview(self, event):
+        fila_seleccionada = event.widget.focus()
+        datos = self.treeview.item(fila_seleccionada)
+        self.id_contacto = datos['text']
 
 
 
